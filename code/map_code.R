@@ -1,3 +1,5 @@
+# code to generate a Gulf of Alaska map with federal stat areas
+
 # load ----
 library(PBSmapping)
 library(tidyverse)
@@ -14,13 +16,14 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')+
                   panel.grid.minor = element_blank()))
 
 # data ----
+# shapefile from Sabrina Larsen sabrina.larsen@alaska.gov 
 areas <- readOGR("data/shpfiles", layer = "NMFS_GOA_WGS1984")
 areas@data$id = rownames(areas@data)
 areas.points = fortify(areas, region="id")
 areas.df = left_join(areas.points, areas@data, by="id")
 
 
-data('nepacLLhigh') #load PBSmapping data set for N Pacific - much better resolution than world highres...
+data('nepacLLhigh') #load PBSmapping data set for N Pacific - much better resolution than worldHighres...
 nepacLLhigh %>% 
   dplyr::select(group=PID, POS=POS,long=X,lat=Y) -> ak1
 
